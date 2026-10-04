@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suplementa</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ===================== PANTALLA 1: INICIO ===================== -->
+  <section id="inicio">
+    <h1>Suplementa</h1>
+    <p>Respondé 9 preguntas y te sugerimos qué tipo de suplementos deportivos se adaptan a tu perfil, con productos de tiendas online uruguayas.</p>
+    <button id="boton-comenzar" type="button">Comenzar</button>
+    <p class="aviso-salud">Las sugerencias de esta herramienta son de carácter informativo y comercial y no sustituyen el asesoramiento de un médico, nutricionista u otro profesional de la salud.</p>
+  </section>
+
+  <!-- ===================== PANTALLA 2: CUESTIONARIO ===================== -->
+  <!-- El contenido de cada pregunta lo completa app.js -->
+  <section id="cuestionario" hidden>
+    <p id="texto-progreso">Paso 1 de 9</p>
+    <progress id="barra-progreso" max="9" value="1"></progress>
+
+    <h2 id="texto-pregunta"></h2>
+    <div id="opciones"></div>
+
+    <div class="navegacion">
+      <button id="boton-anterior" type="button">Anterior</button>
+      <button id="boton-siguiente" type="button" disabled>Siguiente</button>
+    </div>
+  </section>
+
+  <!-- ===================== PANTALLA 3: RESULTADO ===================== -->
+  <!-- El contenido lo completa app.js con lo que devuelve recomendar() -->
+  <section id="resultado" hidden>
+    <h2>Tu resultado</h2>
+
+    <!-- Aviso destacado (cuando la condición médica es "Prefiero no responder") -->
+    <p id="aviso-destacado" class="aviso-destacado" hidden></p>
+
+    <h3>Tu perfil</h3>
+    <ul id="resumen-perfil"></ul>
+
+    <div id="avisos"></div>
+
+    <div id="categorias"></div>
+
+    <p id="texto-fecha"></p>
+
+    <button id="boton-reiniciar" type="button">Volver a empezar</button>
+
+    <footer>
+      <p class="aviso-salud">Las sugerencias de esta herramienta son de carácter informativo y comercial y no sustituyen el asesoramiento de un médico, nutricionista u otro profesional de la salud.</p>
+    </footer>
+  </section>
+
+  <!-- Scripts: primero los datos, después las reglas y por último la app -->
+  <script src="catalogo.js"></script>
+  <script src="reglas.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
