@@ -1,0 +1,468 @@
+/* styles.css
+   Diseño visual de Suplementa, basado en los mockups del grupo:
+   fondo claro, acentos en azul, botón principal verde y tarjetas. */
+
+/* =====================================================================
+   COLORES Y MEDIDAS (se definen una sola vez y se reutilizan)
+   ===================================================================== */
+:root {
+  --azul: #1a6fe0;
+  --azul-oscuro: #1257b5;
+  --azul-suave: #eaf2fd;
+  --verde: #2ea44f;
+  --verde-oscuro: #238a3f;
+  --texto: #14213d;
+  --texto-suave: #5b6478;
+  --borde: #dfe5ee;
+  --fondo: #f3f6fa;
+  --blanco: #ffffff;
+  --gris: #c3c9d3;
+  --amarillo-suave: #fff6e0;
+  --amarillo-borde: #f0b429;
+  --radio: 12px;
+}
+
+/* =====================================================================
+   BASE
+   ===================================================================== */
+* {
+  box-sizing: border-box;
+}
+
+/* Lo que tiene el atributo "hidden" siempre queda oculto */
+[hidden] {
+  display: none !important;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  background: var(--fondo);
+  color: var(--texto);
+  /* Fuentes del sistema: no se descarga nada de internet */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+}
+
+h1, h2, h3, h4 {
+  line-height: 1.2;
+  margin: 0 0 12px;
+}
+
+/* Cada pantalla es una tarjeta blanca centrada */
+section {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px;
+  background: var(--blanco);
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(20, 33, 61, 0.06);
+}
+
+/* =====================================================================
+   BOTONES
+   ===================================================================== */
+button,
+.boton-tienda {
+  font: inherit;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 10px;
+  border: 1px solid var(--azul);
+  background: var(--blanco);
+  color: var(--azul);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+button:hover,
+.boton-tienda:hover {
+  background: var(--azul-suave);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Botón principal verde "Comenzar" */
+#boton-comenzar {
+  background: var(--verde);
+  border-color: var(--verde);
+  color: var(--blanco);
+  font-size: 1.15rem;
+  padding: 14px 36px;
+}
+
+#boton-comenzar:hover {
+  background: var(--verde-oscuro);
+}
+
+/* =====================================================================
+   PANTALLA 1: INICIO
+   ===================================================================== */
+#inicio h1 {
+  font-size: 2.6rem;
+  color: var(--azul);
+}
+
+#inicio > p {
+  color: var(--texto-suave);
+  font-size: 1.1rem;
+  max-width: 560px;
+}
+
+#boton-comenzar {
+  margin: 12px 0 28px;
+}
+
+/* =====================================================================
+   AVISO LEGAL (inicio y pie del resultado): recuadro suave
+   ===================================================================== */
+.aviso-salud {
+  background: var(--azul-suave);
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+  padding: 12px 16px;
+  border-radius: var(--radio);
+  margin: 0;
+}
+
+/* =====================================================================
+   PANTALLA 2: CUESTIONARIO
+   ===================================================================== */
+
+/* Indicador "Paso X de 9" */
+#texto-progreso {
+  color: var(--azul);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 8px;
+}
+
+/* Barra de progreso */
+#barra-progreso {
+  width: 100%;
+  height: 8px;
+  margin-bottom: 24px;
+  border: none;
+  border-radius: 4px;
+  background: var(--borde);
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* Chrome, Edge y Safari */
+#barra-progreso::-webkit-progress-bar {
+  background: var(--borde);
+  border-radius: 4px;
+}
+
+#barra-progreso::-webkit-progress-value {
+  background: var(--azul);
+  border-radius: 4px;
+}
+
+/* Firefox */
+#barra-progreso::-moz-progress-bar {
+  background: var(--azul);
+  border-radius: 4px;
+}
+
+#texto-pregunta {
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+}
+
+/* Opciones como tarjetas en grilla */
+#opciones {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.opcion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 80px;
+  padding: 16px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  background: var(--blanco);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.opcion:hover {
+  border-color: var(--azul);
+}
+
+/* El círculo del botón de radio no se ve: la tarjeta entera es la opción */
+.opcion input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Tarjeta marcada: la que tiene su radio seleccionado */
+.opcion:has(input:checked) {
+  border: 2px solid var(--azul);
+  background: var(--azul-suave);
+  color: var(--azul-oscuro);
+}
+
+/* Se ve el foco al navegar con el teclado */
+.opcion:has(input:focus-visible) {
+  outline: 3px solid var(--azul);
+  outline-offset: 2px;
+}
+
+/* Botones Anterior / Siguiente */
+.navegacion {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+#boton-siguiente {
+  background: var(--azul);
+  color: var(--blanco);
+}
+
+#boton-siguiente:hover:not(:disabled) {
+  background: var(--azul-oscuro);
+}
+
+/* =====================================================================
+   PANTALLA 3: RESULTADO
+   ===================================================================== */
+#resultado > h2 {
+  font-size: 2rem;
+}
+
+#resultado > h3 {
+  font-size: 1rem;
+  color: var(--texto-suave);
+  margin-top: 24px;
+}
+
+/* Aviso de "Prefiero no responder": recuadro destacado */
+.aviso-destacado {
+  background: var(--amarillo-suave);
+  border: 1px solid var(--amarillo-borde);
+  border-left: 6px solid var(--amarillo-borde);
+  border-radius: var(--radio);
+  padding: 14px 18px;
+  font-weight: 600;
+}
+
+/* Resumen del perfil como "chips" */
+#resumen-perfil {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#resumen-perfil li {
+  background: var(--azul-suave);
+  color: var(--texto);
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+/* Otros avisos (menor de edad, frecuencia, restricción, etc.) */
+.aviso {
+  background: var(--fondo);
+  border-left: 4px solid var(--azul);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin: 0 0 12px;
+}
+
+/* Cada categoría: tarjeta con sus productos en grilla.
+   Título, explicación y mensaje ocupan todo el ancho. */
+#categorias {
+  counter-reset: numero-categoria;
+}
+
+.categoria {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 20px 0;
+}
+
+.categoria > h3,
+.categoria > p {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.categoria > p {
+  color: var(--texto-suave);
+}
+
+/* Número de la categoría (1, 2) en un cuadradito azul, como en el mockup */
+.categoria > h3 {
+  counter-increment: numero-categoria;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.categoria > h3::before {
+  content: counter(numero-categoria);
+  background: var(--azul-suave);
+  color: var(--azul);
+  font-size: 0.95rem;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Mensaje "No encontramos opciones compatibles..." */
+.categoria > .mensaje {
+  background: var(--fondo);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-style: italic;
+}
+
+/* Tarjeta de producto */
+.producto {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 16px;
+  background: var(--blanco);
+}
+
+.producto h4 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.producto p {
+  margin: 0;
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+}
+
+.producto .precio {
+  color: var(--texto);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+/* Insignias chicas: "Promoción" y "Supera tu presupuesto" */
+.etiqueta {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #e3f6e8;
+  color: var(--verde-oscuro);
+}
+
+.producto p.etiqueta-presupuesto {
+  align-self: flex-start;
+  background: var(--amarillo-suave);
+  color: #8a5a00;
+  font-size: 0.72rem;
+}
+
+/* Botón "Ver en tienda": queda abajo de la tarjeta */
+.producto .boton-tienda {
+  margin-top: auto;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+}
+
+/* "Link pendiente": deshabilitado y en gris */
+.producto button.boton-tienda:disabled {
+  border-color: var(--gris);
+  background: var(--fondo);
+  color: var(--texto-suave);
+  opacity: 1;
+}
+
+/* Fecha de relevamiento de precios */
+#texto-fecha {
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+}
+
+#boton-reiniciar {
+  margin: 8px 0 24px;
+}
+
+/* =====================================================================
+   CELULAR (pantallas angostas)
+   ===================================================================== */
+@media (max-width: 600px) {
+  body {
+    padding: 12px;
+  }
+
+  section {
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+
+  #inicio h1 {
+    font-size: 2rem;
+  }
+
+  #texto-pregunta {
+    font-size: 1.25rem;
+  }
+
+  /* Opciones en dos columnas */
+  #opciones {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .opcion {
+    min-height: 64px;
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+
+  #boton-comenzar {
+    width: 100%;
+  }
+
+  .navegacion button {
+    flex: 1;
+  }
+
+  /* Productos de a uno por fila */
+  .categoria {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+}
