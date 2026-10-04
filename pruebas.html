@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pruebas de reglas</title>
+  <!-- Página de uso interno: prueba la función recomendar() de reglas.js -->
+  <style>
+    body { font-family: sans-serif; max-width: 800px; margin: 20px auto; padding: 0 16px; }
+    .caso { border: 1px solid #ccc; border-radius: 6px; padding: 8px 12px; margin-bottom: 10px; }
+    .ok { background: #eaf7ea; }
+    .falla { background: #fdeaea; }
+    .detalle { font-family: monospace; font-size: 13px; margin: 4px 0 0 20px; }
+  </style>
+</head>
+<body>
+  <h1>Pruebas de reglas.js</h1>
+  <p id="resumen"></p>
+  <div id="resultados"></div>
+
+  <!-- Se cargan los mismos archivos que usa la página real -->
+  <script src="catalogo.js"></script>
+  <script src="reglas.js"></script>
+
+  <script>
+    // Respuestas por defecto de cada caso (cada caso cambia solo lo que necesita)
+    const POR_DEFECTO = {
+      edad: "26 a 35",
+      condicion: "No",
+      genero: "Prefiero no indicar",
+      actividad: "Musculación / gimnasio",
+      frecuencia: "3 a 4",
+      objetivo: "Ganar masa muscular",
+      experiencia: "Principiante (nunca usé)",
+      preferencia: "Ninguna",
+      presupuesto: "No tengo un presupuesto definido"
+    };
+
+    // Ejecuta recomendar() con las respuestas por defecto más los cambios del caso
+    function probar(cambios) {
+      const respuestas = Object.assign({}, POR_DEFECTO, cambios);
+      return recomendar(respuestas);
+    }
+
+    // Ayudas para leer el resultado
+    function nombresCategorias(r) {
+      return r.categorias.map((c) => c.nombre);
+    }
+    function categoria(r, nombre) {
+      return r.categorias.find((c) => c.nombre === nombre);
+    }
+    function nombresProductos(cat) {
+      return cat ? cat.productos.map((p) => p.nombre) : "(no existe la categoría)";
+    }
+    function totalProductos(r) {
+      return r.categorias.reduce((suma, c) => suma + c.productos.length, 0);
+    }
+
+    // Lista de casos. Cada caso devuelve una lista de comprobaciones:
+    // { que: qué se revisa, esperado: valor esperado, obtenido: valor que salió }
+    const CASOS = [
+      {
+        nombre: "1) Por defecto",
+        comprobar: () => {
+          const r = probar({});
+          return [
+            { que: "categorías", esperado: ["Proteína en polvo", "Creatina"], obtenido: nombresCategorias(r) },
+            { que: "aviso de orientación general", esperado: false, obtenido: r.avisos.includes(TEXTO_RESPALDO) }
+          ];
+        }
+      },
+      {
+        nombre: "2) Otro + Mejorar el rendimiento",
+        comprobar: () => {
+          const r = probar({ actividad: "Otro", objetivo: "Mejorar el rendimiento" });
+          return [
+            { que: "categorías", esperado: ["Creatina", "Carbohidratos / energía"], obtenido: nombresCategorias(r) },
+            { que: "aviso de orientación general", esperado: true, obtenido: r.avisos.includes(TEXTO_RESPALDO) }
+          ];
+        }
+      },
+      {
+        nombre: "3) Otro + Complementar mi alimentación",
+        comprobar: () => {
+          const r = probar({ actividad: "Otro", objetivo: "Complementar mi alimentación" });
+          return [
+            { que: "categorías", esperado: ["Proteína en polvo", "Barras / snacks proteicos"], obtenido: nombresCategorias(r) },
+            { que: "aviso de orientación general", esperado: false, obtenido: r.avisos.includes(TEXTO_RESPALDO) }
+          ];
+        }
+      },
+      {
+        nombre: "4) Frecuencia 1 a 2",
+        comprobar: () => {
+          const r = probar({ frecuencia: "1 a 2" });
+          return [
+            { que: "categorías", esperado: ["Proteína en polvo"], obtenido: nombresCategorias(r) }
+          ];
+        }
+      },
+      {
+        nombre: "5) Preferencia Vegana",
+        comprobar: () => {
+          const r = probar({ preferencia: "Vegana" });
+          return [
+            { que: "categorías", esperado: ["Proteína vegetal", "Creatina"], obtenido: nombresCategorias(r) }
+          ];
+        }
+      },
+      {
+        nombre: "6) Sin lactosa + Hasta $1.000",
+        comprobar: () => {
+          const r = probar({ preferencia: "Sin lactosa", presupuesto: "Hasta $1.000" });
+          const cat = categoria(r, "Proteína en polvo");
+          return [
+            { que: "productos de Proteína en polvo", esperado: ["Vegan Protein Vitalabs 454 g Vainilla"], obtenido: nombresProductos(cat) },
+            { que: "superaPresupuesto", esperado: true, obtenido: cat ? cat.superaPresupuesto : "(no existe la categoría)" }
+          ];
+        }
+      },
+      {
+        nombre: "7) Sin lactosa",
+        comprobar: () => {
+          const r = probar({ preferencia: "Sin lactosa" });
+          const cat = categoria(r, "Proteína en polvo");
+          const conLactosa = cat ? cat.productos.filter((p) => p.lactosa === "Contiene").map((p) => p.nombre) : [];
+          return [
+            {
+              que: "productos de Proteína en polvo (en orden)",
+              esperado: [
+                "Vegan Protein Vitalabs 454 g Vainilla",
+                "Power Vegan Protein Cibeles",
+                "Vegan Protein Vitalabs 907 g Vainilla",
+                "Platinum 100% Whey Isolate 930 g"
+              ],
+              obtenido: nombresProductos(cat)
+            },
+            { que: "productos que contienen lactosa", esperado: [], obtenido: conLactosa }
+          ];
+        }
+      },
+      {
+        nombre: "8) Running + Complementar mi alimentación + Vegana",
+        comprobar: () => {
+          const r = probar({ actividad: "Running", objetivo: "Complementar mi alimentación", preferencia: "Vegana" });
+          const barras = categoria(r, "Barras / snacks proteicos");
+          return [
+            { que: "categorías", esperado: ["Proteína vegetal", "Barras / snacks proteicos"], obtenido: nombresCategorias(r) },
+            { que: "productos de Barras", esperado: [], obtenido: nombresProductos(barras) },
+            { que: "mensaje de Barras", esperado: TEXTO_SIN_COMPATIBLES, obtenido: barras ? barras.mensaje : "(no existe la categoría)" }
+          ];
+        }
+      },
+      {
+        nombre: "9) Condición médica Sí",
+        comprobar: () => {
+          const r = probar({ condicion: "Sí" });
+          return [
+            { que: "mostrarProductos", esperado: false, obtenido: r.mostrarProductos },
+            { que: "cantidad de categorías", esperado: 2, obtenido: r.categorias.length },
+            { que: "cantidad total de productos", esperado: 0, obtenido: totalProductos(r) }
+          ];
+        }
+      },
+      {
+        nombre: "10) Menor de 18 años",
+        comprobar: () => {
+          const r = probar({ edad: "Menor de 18 años" });
+          return [
+            { que: "aviso de menor", esperado: true, obtenido: r.avisos.includes(TEXTO_MENOR) },
+            { que: "hay productos", esperado: true, obtenido: totalProductos(r) > 0 }
+          ];
+        }
+      },
+      {
+        nombre: "11) Mejorar el rendimiento + Hasta $1.000",
+        comprobar: () => {
+          const r = probar({ objetivo: "Mejorar el rendimiento", presupuesto: "Hasta $1.000" });
+          return [
+            {
+              que: "productos de Creatina",
+              esperado: ["Creatina Celsius 120 g", "Creatina Monohidrato Sylab 120 g"],
+              obtenido: nombresProductos(categoria(r, "Creatina"))
+            },
+            {
+              que: "productos de Proteína en polvo",
+              esperado: ["Whey Protein Sylab 400 g"],
+              obtenido: nombresProductos(categoria(r, "Proteína en polvo"))
+            }
+          ];
+        }
+      },
+      {
+        nombre: "12) Frecuencia 5 o más",
+        comprobar: () => {
+          const r = probar({ frecuencia: "5 o más" });
+          return [
+            { que: "aviso de frecuencia alta", esperado: true, obtenido: r.avisos.includes(TEXTO_FRECUENCIA_ALTA) }
+          ];
+        }
+      }
+    ];
+
+    // Compara dos valores (también sirve para listas) pasándolos a texto
+    function iguales(a, b) {
+      return JSON.stringify(a) === JSON.stringify(b);
+    }
+
+    // Ejecuta todos los casos y los muestra en la página
+    const contenedor = document.getElementById("resultados");
+    let aprobados = 0;
+
+    CASOS.forEach((caso) => {
+      const div = document.createElement("div");
+      div.className = "caso";
+
+      let fallas = [];
+      try {
+        const comprobaciones = caso.comprobar();
+        fallas = comprobaciones.filter((c) => !iguales(c.esperado, c.obtenido));
+      } catch (error) {
+        // Si recomendar() da un error, el caso cuenta como fallado
+        fallas = [{ que: "error al ejecutar", esperado: "sin error", obtenido: error.message }];
+      }
+
+      if (fallas.length === 0) {
+        aprobados++;
+        div.classList.add("ok");
+        div.textContent = "✅ " + caso.nombre;
+      } else {
+        div.classList.add("falla");
+        div.textContent = "❌ " + caso.nombre;
+        // Detalle de cada comprobación que falló
+        fallas.forEach((f) => {
+          const detalle = document.createElement("div");
+          detalle.className = "detalle";
+          detalle.textContent =
+            f.que + " → esperado: " + JSON.stringify(f.esperado) + " | salió: " + JSON.stringify(f.obtenido);
+          div.appendChild(detalle);
+        });
+      }
+
+      contenedor.appendChild(div);
+    });
+
+    document.getElementById("resumen").textContent = aprobados + " de " + CASOS.length + " casos aprobados.";
+  </script>
+</body>
+</html>
