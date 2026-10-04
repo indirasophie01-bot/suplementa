@@ -48,7 +48,7 @@ const TABLA_RESPALDO = [
 
 // Explicaciones de cada categoría.
 // simple: para principiantes. detallada: para intermedio y avanzado.
-// TEXTOS PROVISORIOS: los definitivos se redactan en un paso aparte.
+// Textos definitivos de explicación.
 const EXPLICACIONES = {
   "Proteína en polvo": {
     simple: "Puede ayudarte a sumar proteína a tu alimentación de forma práctica, algo a considerar si entrenás con regularidad.",
