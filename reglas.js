@@ -51,32 +51,32 @@ const TABLA_RESPALDO = [
 // TEXTOS PROVISORIOS: los definitivos se redactan en un paso aparte.
 const EXPLICACIONES = {
   "Proteína en polvo": {
-    simple: "(Provisorio) Ayuda a sumar proteína a tu alimentación de forma práctica.",
-    detallada: "(Provisorio) Fuente práctica de proteína para complementar la dieta y acompañar el entrenamiento."
+    simple: "Puede ayudarte a sumar proteína a tu alimentación de forma práctica, algo a considerar si entrenás con regularidad.",
+    detallada: "Puede ayudarte a alcanzar tus requerimientos diarios de proteína de forma práctica, especialmente en etapas de mayor demanda física como el entrenamiento de fuerza. Es un complemento de la alimentación y no reemplaza las comidas, por lo que conviene considerarla según la proteína que ya incorporás con tu dieta habitual."
   },
   "Proteína vegetal": {
-    simple: "(Provisorio) Proteína de origen vegetal, sin ingredientes de origen animal.",
-    detallada: "(Provisorio) Alternativa vegetal a la proteína whey, apta para una alimentación vegana."
+    simple: "Es una alternativa de proteína de origen vegetal que puede ayudarte a complementar tu alimentación sin ingredientes de origen animal.",
+    detallada: "Es una alternativa a la proteína de suero (whey), elaborada a partir de fuentes vegetales, y puede ser una opción a considerar si seguís una alimentación vegana. Puede ayudarte a alcanzar tus requerimientos de proteína de forma práctica. Al elegir una, vale la pena revisar en la etiqueta de qué fuentes vegetales proviene."
   },
   "Creatina": {
-    simple: "(Provisorio) Uno de los suplementos más usados en entrenamientos de fuerza.",
-    detallada: "(Provisorio) Suplemento muy estudiado, usado en esfuerzos cortos e intensos."
+    simple: "Es uno de los suplementos más estudiados y puede ayudar en entrenamientos cortos e intensos.",
+    detallada: "Es uno de los suplementos más estudiados y utilizados. Puede contribuir al rendimiento en entrenamientos de alta intensidad y a la mejora progresiva de la fuerza y la potencia. No es un estimulante: su posible aporte se asocia al uso sostenido junto con un entrenamiento constante."
   },
   "Electrolitos / hidratación": {
-    simple: "(Provisorio) Ayudan a reponer lo que perdés al transpirar.",
-    detallada: "(Provisorio) Aportan sales minerales que se pierden con el sudor en entrenamientos largos."
+    simple: "Pueden ayudarte a reponer las sales minerales que se pierden al transpirar, algo a considerar en entrenamientos largos o con calor.",
+    detallada: "Aportan sales minerales, como sodio y potasio, que se pierden con el sudor. Pueden contribuir a mantener una buena hidratación en entrenamientos prolongados, intensos o con calor. No reemplazan el consumo de agua: son un complemento a considerar según la duración y las condiciones de tu actividad."
   },
   "Carbohidratos / energía": {
-    simple: "(Provisorio) Aportan energía rápida durante el ejercicio.",
-    detallada: "(Provisorio) Geles y bebidas con carbohidratos de rápida absorción para esfuerzos prolongados."
+    simple: "Son una fuente de energía práctica que puede ser útil durante entrenamientos o competencias largas.",
+    detallada: "Son geles y otros productos con carbohidratos de rápida absorción, pensados para aportar energía durante esfuerzos prolongados. Pueden ayudar a sostener el rendimiento cuando la actividad se extiende en el tiempo, como en running o ciclismo de larga distancia. Conviene probarlos primero en entrenamientos y no usarlos por primera vez en una competencia."
   },
   "Recuperación deportiva": {
-    simple: "(Provisorio) Productos pensados para después de entrenar.",
-    detallada: "(Provisorio) Aminoácidos como BCAA y glutamina, usados habitualmente en la etapa de recuperación."
+    simple: "Son productos que se usan habitualmente después de entrenar, como complemento de una buena alimentación y del descanso.",
+    detallada: "Incluye aminoácidos como los BCAA y la glutamina, que se usan habitualmente en la etapa posterior al entrenamiento. La evidencia sobre sus beneficios es más limitada que la de otros suplementos, por lo que conviene verlos como un complemento opcional. La base de la recuperación sigue siendo una alimentación adecuada, la hidratación y el descanso."
   },
   "Barras / snacks proteicos": {
-    simple: "(Provisorio) Un snack práctico con proteína para llevar.",
-    detallada: "(Provisorio) Opción práctica para sumar proteína entre comidas."
+    simple: "Son una forma práctica de sumar proteína entre comidas o cuando estás fuera de casa.",
+    detallada: "Pueden ser una opción práctica para sumar proteína entre comidas, sobre todo cuando no tenés tiempo de preparar algo. Además de proteína, suelen aportar carbohidratos y grasas, por lo que conviene revisar la etiqueta. Son un complemento de la alimentación y no reemplazan las comidas."
   }
 };
 
