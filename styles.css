@@ -114,8 +114,42 @@ button:disabled {
   max-width: 560px;
 }
 
+/* Línea chica arriba del título: mayúsculas y azul */
+#inicio > .subtitulo {
+  color: var(--azul);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 8px;
+}
+
 #boton-comenzar {
   margin: 12px 0 28px;
+}
+
+/* Fila de 3 beneficios con ícono */
+.beneficios {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 28px;
+  display: flex;
+  gap: 24px;
+}
+
+.beneficios li {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--texto-suave);
+  font-size: 0.95rem;
+}
+
+/* Los íconos toman el color verde (usan "currentColor") */
+.beneficios svg {
+  color: var(--verde);
+  flex-shrink: 0;
 }
 
 /* =====================================================================
@@ -454,6 +488,12 @@ button:disabled {
 
   #boton-comenzar {
     width: 100%;
+  }
+
+  /* Beneficios uno debajo del otro */
+  .beneficios {
+    flex-direction: column;
+    gap: 14px;
   }
 
   .navegacion button {
