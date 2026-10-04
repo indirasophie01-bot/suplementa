@@ -57,10 +57,12 @@ Lo desarrolla una sola persona que está aprendiendo a programar y a usar Claude
 
 Edad y género son datos de contexto: no cambian por sí solos la recomendación.
 
+En las tablas, "Mejorar rendimiento" equivale a "Mejorar el rendimiento" y "Complementar alimentación" equivale a "Complementar mi alimentación". En pantalla se usa siempre el texto de la pregunta.
+
 ## Reglas de seguridad (se aplican primero)
 
 - **Menor de 18:** mostrar un cartel que diga que estos productos no se recomiendan para menores de 18 años y que la consulta debe hacerse con un adulto responsable y un profesional de la salud. El usuario puede seguir igual.
-- **Condición médica = Sí:** mostrar solo información general de las categorías, **sin productos**, y recomendar consultar a un profesional antes de consumir suplementos.
+- **Condición médica = Sí:** mostrar las mismas categorías que saldrían según sus respuestas (incluida la regla de frecuencia), con su explicación, pero **sin productos**, y recomendar consultar a un profesional antes de consumir suplementos.
 - **Condición médica = Prefiero no responder:** flujo normal, con el aviso de salud destacado arriba del resultado.
 
 ## Tabla de decisión (actividad + objetivo → máximo 2 categorías)
@@ -83,7 +85,9 @@ Edad y género son datos de contexto: no cambian por sí solos la recomendación
 | Deportes de equipo | Mejorar recuperación | Recuperación deportiva | Proteína en polvo |
 | Cualquier actividad | Complementar alimentación | Proteína en polvo | Barras / snacks proteicos |
 
-**Si la combinación no está en la tabla** (incluye actividad "Otro"), decide solo el objetivo, y el resultado agrega: "Esta es una orientación general según tu objetivo".
+La fila "Cualquier actividad" también aplica a la actividad "Otro" (por ejemplo, "Otro" + "Complementar alimentación"), sin el mensaje de orientación general.
+
+**Si la combinación no está en la tabla** (incluye actividad "Otro" con cualquier objetivo que no sea "Complementar alimentación"), decide solo el objetivo, y el resultado agrega: "Esta es una orientación general según tu objetivo". Ese mensaje aparece solo cuando se usa esta tabla de respaldo.
 
 | Objetivo | Categoría 1 | Categoría 2 |
 |---|---|---|
@@ -96,15 +100,20 @@ Edad y género son datos de contexto: no cambian por sí solos la recomendación
 ## Reglas secundarias
 
 - **Vegana:** la categoría "Proteína en polvo" se reemplaza por "Proteína vegetal".
-- **Sin lactosa:** en la categoría de proteína se muestran primero las opciones sin lactosa (las vegetales) y después las marcadas como "baja en lactosa".
+- **Sin lactosa:** en la categoría de proteína se muestran los productos de "Proteína vegetal" y la isolate "Baja en lactosa"; las whey que "Contienen" lactosa se ocultan. Primero se aplica el filtro de presupuesto y después se ordena: primero sin lactosa, luego baja en lactosa, y dentro de cada grupo del más barato al más caro. Si ninguno de los compatibles entra en el presupuesto, se muestra el más económico de los compatibles con la etiqueta "Supera tu presupuesto" (nunca uno con lactosa).
+- **Vegetariana:** no cambia nada.
+- **Otra:** se agrega la nota "Revisá la etiqueta de cada producto según tu restricción".
+- **Barras / snacks proteicos con vegana o sin lactosa:** como el catálogo no informa esos datos, la categoría muestra "No encontramos opciones compatibles con tu preferencia en nuestro catálogo", sin productos.
 - **Frecuencia 1 a 2 veces:** mostrar solo la Categoría 1 (soluciones más simples).
 - **Frecuencia 5 o más:** se mantienen las categorías y se agrega una nota sobre la importancia de la recuperación y la hidratación.
-- **Experiencia:** cambia solo la explicación. Principiante: texto simple. Intermedio y avanzado: texto más detallado.
+- **Experiencia:** cambia solo la explicación. Principiante: texto simple. Intermedio y avanzado: texto más detallado. Los textos de explicación los redacta Claude, en tono informativo y sin promesas de salud, y se revisan antes de darlos por buenos.
 - **Presupuesto:** no cambia las categorías, solo los productos. Se filtra cada producto por separado y se muestran los de precio menor o igual al tope del rango, del más barato al más caro. Con "Más de $3.000" o "No tengo un presupuesto definido" se muestran todos. Si en una categoría ninguno entra, se muestra el más económico con la etiqueta "Supera tu presupuesto".
 
 ## Catálogo
 
-Los precios son de referencia: mostrar "Precio de referencia, relevado el [fecha]". Los links de cada producto están pendientes de verificar: hasta tenerlos, el botón "Ver en tienda" queda deshabilitado o con un aviso. No inventar links.
+Los precios son de referencia: mostrar "Precio de referencia, relevado el [fecha]". La fecha se define en un solo lugar en `catalogo.js`, con valor inicial "octubre de 2026". Los links de cada producto están pendientes de verificar: mientras un producto no tenga link, el botón "Ver en tienda" queda deshabilitado, en gris, con el texto "Link pendiente". No inventar links.
+
+Los productos en promoción muestran el precio con una etiqueta chica "Promoción".
 
 | Categoría | Producto | Tienda | Precio | Vegano | Lactosa |
 |---|---|---|---|---|---|
@@ -125,8 +134,8 @@ Los precios son de referencia: mostrar "Precio de referencia, relevado el [fecha
 | Carbohidratos / energía | Ena Energy Gel Limón 40 g | El Túnel | $120 | | |
 | Recuperación deportiva | BCAA 1400 Sylab 60 cápsulas | El Túnel | $584 | | |
 | Recuperación deportiva | Glutamina 100% Pure Glutamine 300 g Gold Nutrition | Wikimúsculos | $2.090 | | |
-| Barras / snacks proteicos | Protein Bar ENA caja x16 | Wikimúsculos | $627 (promoción) | | |
+| Barras / snacks proteicos | Protein Bar ENA caja x16 | Wikimúsculos | $627 (promoción) | No informado | No informado |
 
 ## Diseño visual
 
-Referencia: mockups del grupo (nombre "Suplementa", estilo limpio, fondo claro, acentos en azul, botón principal verde "Comenzar", tarjetas para opciones y productos).
+Referencia: mockups del grupo (nombre "Suplementa", estilo limpio, fondo claro, acentos en azul, botón principal verde "Comenzar", tarjetas para opciones y productos). Los mockups se van a compartir más adelante, al trabajar el diseño.
