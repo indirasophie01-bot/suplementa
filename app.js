@@ -66,6 +66,39 @@ const PREGUNTAS = [
   }
 ];
 
+// Íconos de la pregunta de actividad física (SVG dibujado en el código).
+// La clave es el texto exacto de la opción; solo se usa para mostrar el ícono,
+// no cambia la respuesta que se guarda. Usan "currentColor" para tomar el azul del CSS.
+const SVG_INICIO = '<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">';
+const SVG_FIN = "</svg>";
+
+const ICONOS_ACTIVIDAD = {
+  // Pesa (mancuerna)
+  "Musculación / gimnasio": SVG_INICIO +
+    '<path d="M6 7v10M3 9v6M18 7v10M21 9v6M6 12h12"/>' + SVG_FIN,
+  // Persona corriendo
+  "Running": SVG_INICIO +
+    '<circle cx="15" cy="4" r="2" fill="currentColor" stroke="none"/>' +
+    '<path d="M13 7l-3 6M10 13l-3 3H4M10 13l4 3-1 5M8 9l4-2 3 3 3 1"/>' + SVG_FIN,
+  // Bicicleta
+  "Ciclismo": SVG_INICIO +
+    '<circle cx="5.5" cy="16" r="3.5"/><circle cx="18.5" cy="16" r="3.5"/>' +
+    '<path d="M5.5 16L9 9h6l3.5 7M9 9l3 7 3-7M12 16H5.5M8 7h3M15 9l-1-3h2"/>' + SVG_FIN,
+  // Pesa rusa
+  "CrossFit / entrenamiento funcional": SVG_INICIO +
+    '<circle cx="12" cy="15" r="6"/><path d="M8.5 10.5V7a3.5 3.5 0 0 1 7 0v3.5"/>' + SVG_FIN,
+  // Grupo de personas
+  "Deportes de equipo": SVG_INICIO +
+    '<circle cx="12" cy="7" r="3"/><path d="M6 20v-1a6 6 0 0 1 12 0v1"/>' +
+    '<circle cx="5" cy="9" r="2"/><path d="M1 18v-1a4 4 0 0 1 4-4"/>' +
+    '<circle cx="19" cy="9" r="2"/><path d="M23 18v-1a4 4 0 0 0-4-4"/>' + SVG_FIN,
+  // Tres puntos
+  "Otro": SVG_INICIO +
+    '<circle cx="5" cy="12" r="1.8" fill="currentColor" stroke="none"/>' +
+    '<circle cx="12" cy="12" r="1.8" fill="currentColor" stroke="none"/>' +
+    '<circle cx="19" cy="12" r="1.8" fill="currentColor" stroke="none"/>' + SVG_FIN
+};
+
 // =====================================================================
 // ESTADO
 // =====================================================================
@@ -153,7 +186,17 @@ function mostrarPregunta() {
       botonSiguiente.disabled = false;
     });
 
-    label.append(input, " " + opcion);
+    label.append(input);
+
+    // Solo en la pregunta de actividad: ícono arriba del texto (es solo visual)
+    if (pregunta.clave === "actividad") {
+      label.classList.add("opcion-con-icono");
+      const icono = crear("span", "", "icono-opcion");
+      icono.innerHTML = ICONOS_ACTIVIDAD[opcion];
+      label.append(icono);
+    }
+
+    label.append(" " + opcion);
     contenedorOpciones.append(label);
   });
 

@@ -285,6 +285,18 @@ button:disabled {
   outline-offset: 2px;
 }
 
+/* Pregunta de actividad: ícono arriba del texto */
+.opcion-con-icono {
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Los íconos toman el color azul (usan "currentColor") */
+.icono-opcion {
+  display: flex;
+  color: var(--azul);
+}
+
 /* Botones Anterior / Siguiente */
 .navegacion {
   display: flex;
@@ -526,6 +538,12 @@ button:disabled {
     min-height: 64px;
     padding: 12px;
     font-size: 0.95rem;
+  }
+
+  /* Íconos de actividad un poco más chicos */
+  .icono-opcion svg {
+    width: 30px;
+    height: 30px;
   }
 
   #boton-comenzar {
