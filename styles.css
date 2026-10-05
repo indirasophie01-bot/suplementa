@@ -519,21 +519,15 @@ button:disabled {
   padding: 20px;
 }
 
-/* Espacio para la imagen: recuadro celeste (por ahora con el ícono en azul) */
+/* Imagen de la categoría: todas del mismo tamaño. object-fit: cover
+   recorta la imagen para llenar el recuadro sin deformarla. */
 .imagen-categoria {
   flex: 0 0 120px;
-  min-height: 140px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--azul-suave);
+  width: 120px;
+  height: 140px;
+  object-fit: cover;
   border-radius: var(--radio);
-  color: var(--azul);
-}
-
-.imagen-categoria svg {
-  width: 56px;
-  height: 56px;
+  background: var(--azul-suave);
 }
 
 /* Texto: número y nombre, explicación y botón abajo */
@@ -608,22 +602,16 @@ button:disabled {
   background: var(--blanco);
 }
 
-/* Ícono de la categoría en el lugar de la foto: recuadro celeste suave
-   con el ícono en azul (usa "currentColor") */
-.icono-producto {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 110px;
+/* Imagen de la categoría del producto: ocupa todo el ancho de la tarjeta,
+   con la misma altura en todas y recortada de forma pareja */
+.imagen-producto {
+  display: block;
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
   margin-bottom: 6px;
-  background: var(--azul-suave);
   border-radius: var(--radio);
-  color: var(--azul);
-}
-
-.icono-producto svg {
-  width: 56px;
-  height: 56px;
+  background: var(--azul-suave);
 }
 
 .producto h4 {
@@ -799,17 +787,7 @@ button:disabled {
 
   .imagen-categoria {
     flex: none;
-    min-height: 0;
-    height: 100px;
-  }
-
-  /* Recuadro del ícono más bajo para no alargar tanto la tarjeta */
-  .icono-producto {
-    height: 90px;
-  }
-
-  .icono-producto svg {
-    width: 48px;
-    height: 48px;
+    width: 100%;
+    height: 140px;
   }
 }
