@@ -120,6 +120,7 @@ const textoPregunta = document.getElementById("texto-pregunta");
 const contenedorOpciones = document.getElementById("opciones");
 const botonAnterior = document.getElementById("boton-anterior");
 const botonSiguiente = document.getElementById("boton-siguiente");
+const pasosLista = document.querySelectorAll("#lista-pasos li");
 
 const avisoDestacado = document.getElementById("aviso-destacado");
 const resumenPerfil = document.getElementById("resumen-perfil");
@@ -165,6 +166,13 @@ function mostrarPregunta() {
   // Progreso
   textoProgreso.textContent = "Paso " + (pasoActual + 1) + " de " + PREGUNTAS.length;
   barraProgreso.value = pasoActual + 1;
+
+  // Lista de pasos: los anteriores quedan "completado", el actual "actual"
+  // y los que faltan quedan sin clase (se ven en gris)
+  pasosLista.forEach((paso, indice) => {
+    paso.classList.toggle("completado", indice < pasoActual);
+    paso.classList.toggle("actual", indice === pasoActual);
+  });
 
   // Texto de la pregunta
   textoPregunta.textContent = pregunta.texto;

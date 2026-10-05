@@ -297,6 +297,91 @@ button:disabled {
   color: var(--azul);
 }
 
+/* Dos columnas: la pregunta a la izquierda y la lista de pasos a la derecha.
+   minmax(0, 1fr) evita que la columna de la pregunta se desborde. */
+#cuestionario {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  gap: 32px;
+  align-items: start;
+}
+
+/* Lista de pasos: recuadro celeste suave, como en el mockup */
+.lista-pasos {
+  list-style: none;
+  margin: 0;
+  padding: 20px 16px;
+  background: var(--azul-suave);
+  border-radius: var(--radio);
+  counter-reset: numero-paso;
+}
+
+/* Cada paso: círculo con número + título. Por defecto, pendiente (gris). */
+.lista-pasos li {
+  counter-increment: numero-paso;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+  cursor: default;
+}
+
+/* Círculo con el número del paso (lo genera el contador de CSS) */
+.lista-pasos li::before {
+  content: counter(numero-paso);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--gris);
+  background: var(--blanco);
+  color: var(--texto-suave);
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Línea vertical fina que une un círculo con el siguiente (menos en el último) */
+.lista-pasos li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 13px;
+  top: 32px;
+  height: calc(100% - 26px);
+  border-left: 1px solid var(--gris);
+}
+
+/* Paso actual: círculo azul y texto azul en negrita */
+.lista-pasos li.actual {
+  color: var(--azul);
+  font-weight: 700;
+}
+
+.lista-pasos li.actual::before {
+  background: var(--azul);
+  border-color: var(--azul);
+  color: var(--blanco);
+}
+
+/* Paso completado: el número se cambia por una marca */
+.lista-pasos li.completado {
+  color: var(--texto);
+}
+
+.lista-pasos li.completado::before {
+  content: "✓";
+  background: var(--blanco);
+  border-color: var(--azul);
+  color: var(--azul);
+}
+
 /* Botones Anterior / Siguiente */
 .navegacion {
   display: flex;
@@ -490,6 +575,20 @@ button:disabled {
 
 #boton-reiniciar {
   margin: 8px 0 24px;
+}
+
+/* =====================================================================
+   PANTALLAS MEDIANAS Y CHICAS: se oculta la lista de pasos
+   (queda solo la barra de progreso "Paso X de 9")
+   ===================================================================== */
+@media (max-width: 760px) {
+  #cuestionario {
+    grid-template-columns: 1fr;
+  }
+
+  .lista-pasos {
+    display: none;
+  }
 }
 
 /* =====================================================================
