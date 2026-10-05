@@ -292,11 +292,17 @@ function crearCategoria(categoria) {
 function mostrarResultado() {
   const resultado = recomendar(respuestas);
 
-  // Resumen del perfil: cada pregunta con la respuesta elegida
-  resumenPerfil.innerHTML = "";
-  PREGUNTAS.forEach((pregunta) => {
-    resumenPerfil.append(crear("li", pregunta.etiqueta + ": " + respuestas[pregunta.clave]));
-  });
+  // Resumen del perfil en una sola línea:
+  // actividad · frecuencia · objetivo (y la preferencia, si no es "Ninguna")
+  const partesResumen = [
+    respuestas.actividad,
+    respuestas.frecuencia + " veces por semana",
+    "Objetivo: " + respuestas.objetivo
+  ];
+  if (respuestas.preferencia !== "Ninguna") {
+    partesResumen.push(respuestas.preferencia);
+  }
+  resumenPerfil.textContent = partesResumen.join(" · ");
 
   // Avisos: el de "Prefiero no responder" va destacado arriba; el resto, en la lista
   avisoDestacado.hidden = true;

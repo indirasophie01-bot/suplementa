@@ -177,8 +177,8 @@ button:disabled {
   max-width: 560px;
 }
 
-/* Línea chica arriba del título: mayúsculas y azul */
-.portada-texto > .subtitulo {
+/* Línea chica arriba del título: mayúsculas y azul (inicio y resultado) */
+.subtitulo {
   color: var(--azul);
   font-size: 0.85rem;
   font-weight: 600;
@@ -441,10 +441,11 @@ button:disabled {
   font-size: 2rem;
 }
 
-#resultado > h3 {
-  font-size: 1rem;
+/* Frase debajo del título */
+#resultado > .bajada {
   color: var(--texto-suave);
-  margin-top: 24px;
+  font-size: 1.05rem;
+  margin: 0 0 20px;
 }
 
 /* Aviso de "Prefiero no responder": recuadro destacado */
@@ -457,22 +458,15 @@ button:disabled {
   font-weight: 600;
 }
 
-/* Resumen del perfil como "chips" */
+/* Resumen del perfil: una sola línea dentro de un recuadro celeste */
 #resumen-perfil {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 20px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-#resumen-perfil li {
   background: var(--azul-suave);
   color: var(--texto);
-  font-size: 0.85rem;
-  padding: 6px 12px;
-  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 12px 16px;
+  border-radius: var(--radio);
+  margin: 0 0 20px;
 }
 
 /* Otros avisos (menor de edad, frecuencia, restricción, etc.) */
