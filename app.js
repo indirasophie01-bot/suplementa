@@ -99,6 +99,36 @@ const ICONOS_ACTIVIDAD = {
     '<circle cx="19" cy="12" r="1.8" fill="currentColor" stroke="none"/>' + SVG_FIN
 };
 
+// Íconos de las tarjetas de producto, uno por categoría (SVG dibujado en el código).
+// Van en el lugar donde el mockup tiene la foto. La clave es la categoría
+// exacta del producto en catalogo.js; son solo visuales.
+const ICONOS_CATEGORIA = {
+  // Frasco grande
+  "Proteína en polvo": SVG_INICIO +
+    '<rect x="7" y="2" width="10" height="4" rx="1"/>' +
+    '<rect x="5" y="6" width="14" height="16" rx="2"/><path d="M5 11h14M5 17h14"/>' + SVG_FIN,
+  // Hoja
+  "Proteína vegetal": SVG_INICIO +
+    '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10z"/>' +
+    '<path d="M2 21c0-3 1.9-5.4 5.1-6C9.5 14.5 12 13 13 12"/>' + SVG_FIN,
+  // Frasco chico
+  "Creatina": SVG_INICIO +
+    '<rect x="8" y="5" width="8" height="3" rx="1"/>' +
+    '<rect x="7" y="8" width="10" height="12" rx="2"/><path d="M7 13h10"/>' + SVG_FIN,
+  // Gota
+  "Electrolitos / hidratación": SVG_INICIO +
+    '<path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>' + SVG_FIN,
+  // Rayo
+  "Carbohidratos / energía": SVG_INICIO +
+    '<path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>' + SVG_FIN,
+  // Luna (descanso y recuperación)
+  "Recuperación deportiva": SVG_INICIO +
+    '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>' + SVG_FIN,
+  // Barra con envoltorio
+  "Barras / snacks proteicos": SVG_INICIO +
+    '<rect x="2" y="8" width="20" height="8" rx="2"/><path d="M6 8v8M18 8v8"/>' + SVG_FIN
+};
+
 // =====================================================================
 // ESTADO
 // =====================================================================
@@ -237,6 +267,11 @@ function irSiguiente() {
 // Tarjeta de un producto
 function crearProducto(producto, superaPresupuesto) {
   const tarjeta = crear("div", "", "producto");
+
+  // Ícono de la categoría arriba del nombre (en lugar de una foto)
+  const icono = crear("div", "", "icono-producto");
+  icono.innerHTML = ICONOS_CATEGORIA[producto.categoria];
+  tarjeta.append(icono);
 
   tarjeta.append(crear("h4", producto.nombre));
   tarjeta.append(crear("p", "Tienda: " + producto.tienda));

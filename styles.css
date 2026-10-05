@@ -546,6 +546,24 @@ button:disabled {
   background: var(--blanco);
 }
 
+/* Ícono de la categoría en el lugar de la foto: recuadro celeste suave
+   con el ícono en azul (usa "currentColor") */
+.icono-producto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 110px;
+  margin-bottom: 6px;
+  background: var(--azul-suave);
+  border-radius: var(--radio);
+  color: var(--azul);
+}
+
+.icono-producto svg {
+  width: 56px;
+  height: 56px;
+}
+
 .producto h4 {
   font-size: 1rem;
   margin: 0;
@@ -707,5 +725,15 @@ button:disabled {
   .categoria {
     grid-template-columns: 1fr;
     padding: 16px;
+  }
+
+  /* Recuadro del ícono más bajo para no alargar tanto la tarjeta */
+  .icono-producto {
+    height: 90px;
+  }
+
+  .icono-producto svg {
+    width: 48px;
+    height: 48px;
   }
 }
