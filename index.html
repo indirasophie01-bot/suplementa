@@ -100,7 +100,7 @@
     </div>
   </section>
 
-  <!-- ===================== PANTALLA 3: RESULTADO ===================== -->
+  <!-- ===================== PANTALLA 3: CATEGORÍAS (RESULTADO) ===================== -->
   <!-- El contenido lo completa app.js con lo que devuelve recomendar() -->
   <section id="resultado" hidden>
     <!-- Encabezado: línea chica en azul, título y frase de bajada -->
@@ -108,19 +108,45 @@
     <h2>Estas categorías podrían adaptarse a tu perfil</h2>
     <p class="bajada">Según tus respuestas, estas son las categorías más relevantes para vos.</p>
 
-    <!-- Aviso destacado (cuando la condición médica es "Prefiero no responder") -->
-    <p id="aviso-destacado" class="aviso-destacado" hidden></p>
+    <!-- Resumen del perfil en una sola línea (lo completa app.js)
+         y a la derecha el enlace para volver a editar las respuestas -->
+    <div class="recuadro-resumen">
+      <p id="resumen-perfil"></p>
+      <button id="boton-editar" type="button" class="boton-enlace">Editar respuestas</button>
+    </div>
 
-    <!-- Resumen del perfil en una sola línea (lo completa app.js) -->
-    <p id="resumen-perfil"></p>
+    <!-- Aviso destacado (cuando la condición médica es "Prefiero no responder"):
+         es el primer aviso, debajo del resumen -->
+    <p id="aviso-destacado" class="aviso-destacado" hidden></p>
 
     <div id="avisos"></div>
 
+    <!-- Tarjetas de categoría (cada una con su botón "Ver opciones") -->
     <div id="categorias"></div>
+
+    <button id="boton-reiniciar" type="button">Volver a empezar</button>
+
+    <footer>
+      <p class="aviso-salud">Las sugerencias de esta herramienta son de carácter informativo y comercial y no sustituyen el asesoramiento de un médico, nutricionista u otro profesional de la salud.</p>
+    </footer>
+  </section>
+
+  <!-- ===================== PANTALLA 4: PRODUCTOS ===================== -->
+  <!-- Productos de la categoría elegida con "Ver opciones". Lo completa app.js -->
+  <section id="productos" hidden>
+    <p class="subtitulo">Productos recomendados</p>
+    <h2>Opciones disponibles</h2>
+    <!-- Nombre de la categoría elegida -->
+    <p id="nombre-categoria" class="bajada"></p>
+
+    <!-- Mensaje "No encontramos opciones compatibles..." (si corresponde) -->
+    <p id="mensaje-productos" hidden></p>
+
+    <div id="lista-productos"></div>
 
     <p id="texto-fecha"></p>
 
-    <button id="boton-reiniciar" type="button">Volver a empezar</button>
+    <button id="boton-volver-categorias" type="button">Volver a las categorías</button>
 
     <footer>
       <p class="aviso-salud">Las sugerencias de esta herramienta son de carácter informativo y comercial y no sustituyen el asesoramiento de un médico, nutricionista u otro profesional de la salud.</p>

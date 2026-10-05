@@ -1,5 +1,5 @@
 // app.js
-// Navegación entre pantallas (inicio, cuestionario y resultado) y lo que se muestra.
+// Navegación entre pantallas (inicio, cuestionario, categorías y productos) y lo que se muestra.
 // Usa FECHA_RELEVAMIENTO (de catalogo.js) y recomendar() (de reglas.js),
 // que se cargan antes que este archivo.
 
@@ -99,9 +99,9 @@ const ICONOS_ACTIVIDAD = {
     '<circle cx="19" cy="12" r="1.8" fill="currentColor" stroke="none"/>' + SVG_FIN
 };
 
-// Íconos de las tarjetas de producto, uno por categoría (SVG dibujado en el código).
-// Van en el lugar donde el mockup tiene la foto. La clave es la categoría
-// exacta del producto en catalogo.js; son solo visuales.
+// Íconos de las tarjetas de producto y de categoría, uno por categoría (SVG dibujado en el código).
+// Van en el lugar donde el mockup tiene la foto (en las categorías, hasta que se agreguen
+// las imágenes). La clave es la categoría exacta de catalogo.js; son solo visuales.
 const ICONOS_CATEGORIA = {
   // Frasco grande
   "Proteína en polvo": SVG_INICIO +
@@ -135,6 +135,7 @@ const ICONOS_CATEGORIA = {
 
 let pasoActual = 0;   // índice de la pregunta que se está mostrando (0 a 8)
 let respuestas = {};  // ejemplo: { edad: "18 a 25", condicion: "No", ... }
+let resultadoActual = null; // lo que devolvió recomendar() la última vez (se reutiliza al ver productos)
 
 // =====================================================================
 // ELEMENTOS DE LA PÁGINA
@@ -143,6 +144,7 @@ let respuestas = {};  // ejemplo: { edad: "18 a 25", condicion: "No", ... }
 const seccionInicio = document.getElementById("inicio");
 const seccionCuestionario = document.getElementById("cuestionario");
 const seccionResultado = document.getElementById("resultado");
+const seccionProductos = document.getElementById("productos");
 
 const textoProgreso = document.getElementById("texto-progreso");
 const barraProgreso = document.getElementById("barra-progreso");
@@ -156,6 +158,10 @@ const avisoDestacado = document.getElementById("aviso-destacado");
 const resumenPerfil = document.getElementById("resumen-perfil");
 const contenedorAvisos = document.getElementById("avisos");
 const contenedorCategorias = document.getElementById("categorias");
+
+const nombreCategoria = document.getElementById("nombre-categoria");
+const mensajeProductos = document.getElementById("mensaje-productos");
+const listaProductos = document.getElementById("lista-productos");
 const textoFecha = document.getElementById("texto-fecha");
 
 // =====================================================================
@@ -170,11 +176,12 @@ function crear(etiqueta, texto, clase) {
   return elemento;
 }
 
-// Muestra una sola sección y oculta las otras dos
+// Muestra una sola sección y oculta las demás
 function mostrarSeccion(seccion) {
   seccionInicio.hidden = true;
   seccionCuestionario.hidden = true;
   seccionResultado.hidden = true;
+  seccionProductos.hidden = true;
   seccion.hidden = false;
   window.scrollTo(0, 0);
 }
@@ -304,28 +311,37 @@ function crearProducto(producto, superaPresupuesto) {
   return tarjeta;
 }
 
-// Bloque de una categoría: nombre, explicación, mensaje y productos
-function crearCategoria(categoria) {
-  const bloque = crear("article", "", "categoria");
+// Tarjeta de una categoría: imagen, número, nombre, explicación y botón "Ver opciones".
+// "indice" es la posición de la categoría (0 o 1) dentro del resultado.
+function crearCategoria(categoria, indice) {
+  const tarjeta = crear("article", "", "categoria");
 
-  bloque.append(crear("h3", categoria.nombre));
-  bloque.append(crear("p", categoria.explicacion));
+  // Espacio para la imagen: por ahora, el ícono de la categoría (provisorio)
+  const imagen = crear("div", "", "imagen-categoria");
+  imagen.innerHTML = ICONOS_CATEGORIA[categoria.nombre];
+  tarjeta.append(imagen);
 
-  // Mensaje de "no encontramos opciones compatibles" (si existe)
-  if (categoria.mensaje) {
-    bloque.append(crear("p", categoria.mensaje, "mensaje"));
+  // Texto de la tarjeta (el número lo pone el CSS delante del nombre)
+  const texto = crear("div", "", "texto-categoria");
+  texto.append(crear("h3", categoria.nombre));
+  texto.append(crear("p", categoria.explicacion));
+
+  // "Ver opciones" solo si se muestran productos (no aparece con condición médica "Sí")
+  if (resultadoActual.mostrarProductos) {
+    const boton = crear("button", "Ver opciones", "boton-opciones");
+    boton.type = "button";
+    boton.addEventListener("click", () => mostrarProductos(indice));
+    texto.append(boton);
   }
 
-  categoria.productos.forEach((producto) => {
-    bloque.append(crearProducto(producto, categoria.superaPresupuesto));
-  });
-
-  return bloque;
+  tarjeta.append(texto);
+  return tarjeta;
 }
 
-// Calcula la recomendación y dibuja la pantalla de resultado
+// Calcula la recomendación y dibuja la pantalla de categorías
 function mostrarResultado() {
   const resultado = recomendar(respuestas);
+  resultadoActual = resultado; // se guarda para usarlo en la pantalla de productos
 
   // Resumen del perfil en una sola línea:
   // actividad · frecuencia · objetivo (y la preferencia, si no es "Ninguna")
@@ -351,16 +367,44 @@ function mostrarResultado() {
     }
   });
 
-  // Categorías con su explicación y productos
+  // Tarjetas de categoría con su explicación
   contenedorCategorias.innerHTML = "";
-  resultado.categorias.forEach((categoria) => {
-    contenedorCategorias.append(crearCategoria(categoria));
+  resultado.categorias.forEach((categoria, indice) => {
+    contenedorCategorias.append(crearCategoria(categoria, indice));
   });
 
-  // Fecha de relevamiento de precios (solo si se muestran productos)
-  textoFecha.textContent = "Precio de referencia, relevado en " + FECHA_RELEVAMIENTO;
-  textoFecha.hidden = !resultado.mostrarProductos;
+  mostrarSeccion(seccionResultado);
+}
 
+// =====================================================================
+// PRODUCTOS DE UNA CATEGORÍA
+// =====================================================================
+
+// Dibuja la pantalla de productos de la categoría elegida con "Ver opciones".
+// No vuelve a llamar a recomendar(): usa el resultado ya guardado.
+function mostrarProductos(indice) {
+  const categoria = resultadoActual.categorias[indice];
+
+  nombreCategoria.textContent = categoria.nombre;
+
+  // Mensaje de "no encontramos opciones compatibles" (si existe)
+  mensajeProductos.textContent = categoria.mensaje;
+  mensajeProductos.hidden = !categoria.mensaje;
+
+  // Tarjetas de producto
+  listaProductos.innerHTML = "";
+  categoria.productos.forEach((producto) => {
+    listaProductos.append(crearProducto(producto, categoria.superaPresupuesto));
+  });
+
+  // Fecha de relevamiento de precios
+  textoFecha.textContent = "Precio de referencia, relevado en " + FECHA_RELEVAMIENTO;
+
+  mostrarSeccion(seccionProductos);
+}
+
+// Vuelve a la pantalla de categorías (ya está dibujada, no se recalcula)
+function volverACategorias() {
   mostrarSeccion(seccionResultado);
 }
 
@@ -374,9 +418,19 @@ function comenzar() {
   mostrarSeccion(seccionCuestionario);
 }
 
+// Vuelve al paso 1 del cuestionario SIN borrar las respuestas:
+// cada pregunta aparece con su opción marcada y "Siguiente" habilitado.
+// Al terminar el cuestionario, irSiguiente() recalcula el resultado.
+function editarRespuestas() {
+  pasoActual = 0;
+  mostrarPregunta();
+  mostrarSeccion(seccionCuestionario);
+}
+
 // Borra las respuestas y vuelve a la pantalla de inicio
 function volverAEmpezar() {
   respuestas = {};
+  resultadoActual = null;
   pasoActual = 0;
   mostrarSeccion(seccionInicio);
 }
@@ -389,3 +443,5 @@ document.getElementById("boton-comenzar").addEventListener("click", comenzar);
 botonAnterior.addEventListener("click", irAnterior);
 botonSiguiente.addEventListener("click", irSiguiente);
 document.getElementById("boton-reiniciar").addEventListener("click", volverAEmpezar);
+document.getElementById("boton-editar").addEventListener("click", editarRespuestas);
+document.getElementById("boton-volver-categorias").addEventListener("click", volverACategorias);
