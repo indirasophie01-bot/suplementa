@@ -11,6 +11,7 @@
   --azul-suave: #eaf2fd;
   --verde: #2ea44f;
   --verde-oscuro: #238a3f;
+  --verde-suave: #e3f6e8;
   --texto: #14213d;
   --texto-suave: #5b6478;
   --borde: #dfe5ee;
@@ -333,40 +334,35 @@ button:disabled {
   color: var(--azul);
 }
 
-/* Dos columnas: la pregunta a la izquierda y la lista de pasos a la derecha.
-   minmax(0, 1fr) evita que la columna de la pregunta se desborde. */
-#cuestionario {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 220px;
-  gap: 32px;
-  align-items: start;
-}
-
-/* Lista de pasos: recuadro celeste suave, como en el mockup */
-.lista-pasos {
+/* Fila de pasos: 9 pasos uno al lado del otro, todos del mismo ancho */
+.fila-pasos {
   list-style: none;
-  margin: 0;
-  padding: 20px 16px;
-  background: var(--azul-suave);
-  border-radius: var(--radio);
+  margin: 0 0 28px;
+  padding: 0;
+  display: flex;
   counter-reset: numero-paso;
 }
 
-/* Cada paso: círculo con número + título. Por defecto, pendiente (gris). */
-.lista-pasos li {
+/* Cada paso: círculo con número arriba y título corto debajo.
+   Por defecto, pendiente (gris). */
+.fila-pasos li {
   counter-increment: numero-paso;
+  flex: 1;
   position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 6px 0;
+  gap: 6px;
+  padding: 0 2px;
+  text-align: center;
   color: var(--texto-suave);
-  font-size: 0.9rem;
+  font-size: 0.72rem;
+  line-height: 1.2;
   cursor: default;
 }
 
 /* Círculo con el número del paso (lo genera el contador de CSS) */
-.lista-pasos li::before {
+.fila-pasos li::before {
   content: counter(numero-paso);
   width: 26px;
   height: 26px;
@@ -376,46 +372,46 @@ button:disabled {
   color: var(--texto-suave);
   font-size: 0.8rem;
   font-weight: 600;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
   position: relative;
   z-index: 1;
 }
 
-/* Línea vertical fina que une un círculo con el siguiente (menos en el último) */
-.lista-pasos li:not(:last-child)::after {
+/* Línea horizontal fina que une un círculo con el siguiente (menos en el último).
+   Arranca en el borde derecho del círculo y llega al borde izquierdo del siguiente. */
+.fila-pasos li:not(:last-child)::after {
   content: "";
   position: absolute;
-  left: 13px;
-  top: 32px;
-  height: calc(100% - 26px);
-  border-left: 1px solid var(--gris);
+  top: 13px;
+  left: calc(50% + 13px);
+  width: calc(100% - 26px);
+  border-top: 1px solid var(--gris);
 }
 
-/* Paso actual: círculo azul y texto azul en negrita */
-.lista-pasos li.actual {
+/* Paso actual: círculo azul y título azul en negrita */
+.fila-pasos li.actual {
   color: var(--azul);
   font-weight: 700;
 }
 
-.lista-pasos li.actual::before {
+.fila-pasos li.actual::before {
   background: var(--azul);
   border-color: var(--azul);
   color: var(--blanco);
 }
 
-/* Paso completado: el número se cambia por una marca */
-.lista-pasos li.completado {
+/* Paso completado: círculo verde claro con una marca en lugar del número */
+.fila-pasos li.completado {
   color: var(--texto);
 }
 
-.lista-pasos li.completado::before {
+.fila-pasos li.completado::before {
   content: "✓";
-  background: var(--blanco);
-  border-color: var(--azul);
-  color: var(--azul);
+  background: var(--verde-suave);
+  border-color: var(--verde);
+  color: var(--verde-oscuro);
 }
 
 /* Botones Anterior / Siguiente */
@@ -627,7 +623,7 @@ button:disabled {
 
 /* =====================================================================
    PANTALLAS MEDIANAS Y CHICAS: portada en una columna y se oculta
-   la lista de pasos (queda solo la barra de progreso "Paso X de 9")
+   la fila de pasos (queda solo la barra de progreso "Paso X de 9")
    ===================================================================== */
 @media (max-width: 760px) {
   /* Portada: texto (con el botón), después la imagen y después los beneficios */
@@ -644,11 +640,7 @@ button:disabled {
     margin-bottom: 28px;
   }
 
-  #cuestionario {
-    grid-template-columns: 1fr;
-  }
-
-  .lista-pasos {
+  .fila-pasos {
     display: none;
   }
 }

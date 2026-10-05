@@ -74,22 +74,9 @@
   <!-- ===================== PANTALLA 2: CUESTIONARIO ===================== -->
   <!-- El contenido de cada pregunta lo completa app.js -->
   <section id="cuestionario" hidden>
-    <div class="cuestionario-principal">
-      <p id="texto-progreso">Paso 1 de 9</p>
-      <progress id="barra-progreso" max="9" value="1"></progress>
-
-      <h2 id="texto-pregunta"></h2>
-      <div id="opciones"></div>
-
-      <div class="navegacion">
-        <button id="boton-anterior" type="button">Anterior</button>
-        <button id="boton-siguiente" type="button" disabled>Siguiente</button>
-      </div>
-    </div>
-
-    <!-- Lista de pasos (columna derecha). Solo informativa: no es clickeable.
+    <!-- Fila de pasos (arriba de la pregunta). Solo informativa: no es clickeable.
          Los números los pone el CSS y app.js marca el paso actual y los completados. -->
-    <ol id="lista-pasos" class="lista-pasos">
+    <ol id="fila-pasos" class="fila-pasos">
       <li>Edad</li>
       <li>Condición médica</li>
       <li>Género</li>
@@ -100,6 +87,17 @@
       <li>Preferencia</li>
       <li>Presupuesto</li>
     </ol>
+
+    <p id="texto-progreso">Paso 1 de 9</p>
+    <progress id="barra-progreso" max="9" value="1"></progress>
+
+    <h2 id="texto-pregunta"></h2>
+    <div id="opciones"></div>
+
+    <div class="navegacion">
+      <button id="boton-anterior" type="button">Anterior</button>
+      <button id="boton-siguiente" type="button" disabled>Siguiente</button>
+    </div>
   </section>
 
   <!-- ===================== PANTALLA 3: RESULTADO ===================== -->
