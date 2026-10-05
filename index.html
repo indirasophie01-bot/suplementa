@@ -24,39 +24,49 @@
 
   <!-- ===================== PANTALLA 1: INICIO ===================== -->
   <section id="inicio">
-    <p class="subtitulo">Tu guía en suplementos deportivos</p>
-    <h1>Suplementa</h1>
-    <p>Respondé 9 preguntas y te sugerimos qué tipo de suplementos deportivos se adaptan a tu perfil, con productos de tiendas online uruguayas.</p>
-    <button id="boton-comenzar" type="button">Comenzar</button>
+    <!-- Portada: en computadora, texto y beneficios a la izquierda e imagen a la derecha.
+         En celular, todo en una columna: texto, botón, imagen y beneficios. -->
+    <div class="portada">
+      <div class="portada-texto">
+        <p class="subtitulo">Tu guía en suplementos deportivos</p>
+        <h1>Encontrá el suplemento ideal <span class="resaltado">para vos</span></h1>
+        <p>Respondé 9 preguntas y te sugerimos qué tipo de suplementos deportivos se adaptan a tu perfil, con productos de tiendas online uruguayas.</p>
+        <button id="boton-comenzar" type="button">Comenzar</button>
+      </div>
 
-    <!-- Beneficios: los íconos son SVG dibujados acá mismo (no se carga ningún archivo) -->
-    <ul class="beneficios">
-      <li>
-        <!-- Ícono: diana (recomendaciones a tu medida) -->
-        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <circle cx="12" cy="12" r="10"/>
-          <circle cx="12" cy="12" r="6"/>
-          <circle cx="12" cy="12" r="2"/>
-        </svg>
-        <span>Recomendaciones personalizadas</span>
-      </li>
-      <li>
-        <!-- Ícono: bolsa de compras (tiendas online) -->
-        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true">
-          <path d="M5 8h14l-1 13H6L5 8z"/>
-          <path d="M9 8V6a3 3 0 0 1 6 0v2"/>
-        </svg>
-        <span>Productos de tiendas online uruguayas</span>
-      </li>
-      <li>
-        <!-- Ícono: hoja (información clara y simple) -->
-        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M20 4C10 4 4 9 4 16c0 1.5.3 2.8.8 4C12 20 20 15 20 4z"/>
-          <path d="M4.8 20C8 15 12 11 16 8"/>
-        </svg>
-        <span>Información clara y sin vueltas</span>
-      </li>
-    </ul>
+      <!-- width y height = tamaño real de la imagen (350 x 324) -->
+      <img src="img/portada.png" class="portada-imagen" width="350" height="324"
+           alt="Envases de proteína whey y creatina junto a un shaker, una toalla y una mancuerna">
+
+      <!-- Beneficios: los íconos son SVG dibujados acá mismo (no se carga ningún archivo) -->
+      <ul class="beneficios">
+        <li>
+          <!-- Ícono: diana (recomendaciones a tu medida) -->
+          <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <circle cx="12" cy="12" r="6"/>
+            <circle cx="12" cy="12" r="2"/>
+          </svg>
+          <span>Recomendaciones personalizadas</span>
+        </li>
+        <li>
+          <!-- Ícono: bolsa de compras (tiendas online) -->
+          <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 8h14l-1 13H6L5 8z"/>
+            <path d="M9 8V6a3 3 0 0 1 6 0v2"/>
+          </svg>
+          <span>Productos de tiendas online uruguayas</span>
+        </li>
+        <li>
+          <!-- Ícono: hoja (información clara y simple) -->
+          <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 4C10 4 4 9 4 16c0 1.5.3 2.8.8 4C12 20 20 15 20 4z"/>
+            <path d="M4.8 20C8 15 12 11 16 8"/>
+          </svg>
+          <span>Información clara y sin vueltas</span>
+        </li>
+      </ul>
+    </div>
 
     <p class="aviso-salud">Las sugerencias de esta herramienta son de carácter informativo y comercial y no sustituyen el asesoramiento de un médico, nutricionista u otro profesional de la salud.</p>
   </section>

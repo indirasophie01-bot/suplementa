@@ -130,19 +130,55 @@ button:disabled {
 /* =====================================================================
    PANTALLA 1: INICIO
    ===================================================================== */
+/* Portada en grilla: texto arriba a la izquierda, beneficios abajo a la izquierda
+   e imagen a la derecha ocupando las dos filas */
+.portada {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "texto      imagen"
+    "beneficios imagen";
+  column-gap: 32px;
+  align-items: center;
+}
+
+.portada-texto {
+  grid-area: texto;
+}
+
+/* La imagen puede achicarse, pero nunca pasa de su tamaño real (350px)
+   para que no se vea borrosa. height: auto mantiene la proporción. */
+.portada-imagen {
+  grid-area: imagen;
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+  border-radius: var(--radio);
+}
+
+.portada .beneficios {
+  grid-area: beneficios;
+}
+
+/* Título grande, en negrita y oscuro; "para vos" en azul */
 #inicio h1 {
-  font-size: 2.6rem;
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--texto);
+}
+
+#inicio h1 .resaltado {
   color: var(--azul);
 }
 
-#inicio > p {
+.portada-texto > p {
   color: var(--texto-suave);
   font-size: 1.1rem;
   max-width: 560px;
 }
 
 /* Línea chica arriba del título: mayúsculas y azul */
-#inicio > .subtitulo {
+.portada-texto > .subtitulo {
   color: var(--azul);
   font-size: 0.85rem;
   font-weight: 600;
@@ -578,10 +614,24 @@ button:disabled {
 }
 
 /* =====================================================================
-   PANTALLAS MEDIANAS Y CHICAS: se oculta la lista de pasos
-   (queda solo la barra de progreso "Paso X de 9")
+   PANTALLAS MEDIANAS Y CHICAS: portada en una columna y se oculta
+   la lista de pasos (queda solo la barra de progreso "Paso X de 9")
    ===================================================================== */
 @media (max-width: 760px) {
+  /* Portada: texto (con el botón), después la imagen y después los beneficios */
+  .portada {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "texto"
+      "imagen"
+      "beneficios";
+  }
+
+  .portada-imagen {
+    justify-self: center;
+    margin-bottom: 28px;
+  }
+
   #cuestionario {
     grid-template-columns: 1fr;
   }
